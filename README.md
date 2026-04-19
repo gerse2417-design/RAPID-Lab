@@ -1,3 +1,2 @@
 # RAPID-Lab
-RAPID-LAB(Resistance-Averting Protein Interface Design Lab)
-내성 억제 단백질 인터페이스 디자인
+Resistance-Averting Protein Interface Design Lab: 내성 억제 단백질 인터페이스 디자인
