@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Molecular Lens - 분석 경로 선택 (Light Mode)</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&amp;family=Inter:wght@300;400;600&amp;family=Public+Sans:wght@300;400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2563eb",
+                        "primary-container": "#3b82f6",
+                        "on-primary": "#ffffff",
+                        secondary: "#059669",
+                        tertiary: "#e11d48",
+                        surface: "#f8fafc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f1f5f9",
+                        "surface-container-highest": "#e2e8f0",
+                        "on-surface": "#0f172a",
+                        "on-surface-variant": "#475569",
+                        "outline-variant": "rgba(0, 0, 0, 0.1)",
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Inter", "sans-serif"],
+                    }
+                },
+            },
+        }
+    </script>
+    <style data-purpose="global-styles">
+        body { background-color: #f8fafc; color: #0f172a; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 3px; }
+        
+        /* 통일된 사이드바 스타일 */
+        .nav-item-active { background-color: rgba(37, 99, 235, 0.08); border-left: 3px solid #2563eb; color: #2563eb !important; }
+        .history-item:hover .history-actions { opacity: 1; }
+        .sidebar-btn-gradient { background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); }
+
+        /* 기존 2번 컨텐츠 스타일 유지 */
+        .card-bg { background-color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .cta-gradient { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        input[type=range].scientific-slider { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range].scientific-slider:focus { outline: none; }
+        input[type=range].scientific-slider::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #cbd5e1; border-radius: 2px; }
+        input[type=range].scientific-slider::-webkit-slider-thumb { height: 14px; width: 14px; border-radius: 50%; background: #ef4444; cursor: pointer; -webkit-appearance: none; margin-top: -5px; box-shadow: 0 0 4px rgba(239, 68, 68, 0.4); }
+        .af-config-bg { background: #f8fafc; border: 1px solid rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="overflow-x-hidden selection:bg-primary/20 min-h-screen">
+
+    <header class="flex justify-between items-center px-8 h-14 w-full fixed top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-blue-600 text-2xl">hub</span>
+            <h1 class="text-[15px] font-bold text-gray-900 tracking-tight whitespace-nowrap">항생제 내성 유전자 탐지 기반 내성 억제 단백질 후보 설계 서비스</h1>
+        </div>
+    </header>
+
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed left-0 top-0 h-screen z-40 pt-14">
+        <nav class="flex-none mt-8 px-0">
+            <div class="px-6 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-gray-500 text-xl">rebase_edit</span>
+                <h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-widest">분석 파이프라인</h3>
+            </div>
+            <div class="px-6 mb-2">
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">진행 상태</p>
+            </div>
+            
+            <a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+                <span class="material-symbols-outlined text-xl">login</span>
+                <span class="text-sm font-medium">데이터 입력</span>
+            </a>
+            <a class="nav-item-active flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+                <span class="material-symbols-outlined text-xl">account_tree</span>
+                <span class="text-sm font-medium">경로 선택</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+                <span class="material-symbols-outlined text-xl">biotech</span>
+                <span class="text-sm font-medium">BOARDS DB 탐색</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+                <span class="material-symbols-outlined text-xl">science</span>
+                <span class="text-sm font-medium">AlphaFold2 결과</span>
+            </a>
+        </nav>
+        
+        <div class="flex-1 px-4 overflow-y-auto scrollbar-thin mt-8">
+            <div class="flex items-center gap-2 px-2 mb-4">
+                <span class="material-symbols-outlined text-gray-500 text-xl">folder</span>
+                <h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-widest">파일 보관함</h3>
+            </div>
+            <div class="space-y-1">
+                <div class="history-item group flex items-center justify-between px-2 py-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                    <span class="text-xs truncate text-gray-800">
+                        <span class="material-symbols-outlined text-xs mr-2 text-gray-500 align-middle">insert_drive_file</span>
+                        E. coli V583
+                    </span>
+                    <div class="history-actions opacity-0 flex items-center gap-1 transition-opacity">
+                        <button class="p-1 text-gray-500 hover:text-blue-600 transition-colors" title="Rename"><span class="material-symbols-outlined text-sm">edit</span></button>
+                        <button class="p-1 text-gray-500 hover:text-red-500 transition-colors" title="Delete"><span class="material-symbols-outlined text-sm">delete</span></button>
+                    </div>
+                </div>
+                </div>
+        </div>
+        
+        <div class="p-4 space-y-4 border-t border-gray-200">
+            <button class="w-full py-3 rounded-lg sidebar-btn-gradient text-white text-sm font-bold shadow-md hover:brightness-110 transition-all active:scale-[0.98]">
+                새 프로젝트
+            </button>
+        </div>
+    </aside>
+
+    <div class="ml-64 pt-20 pb-10 min-h-screen flex flex-col">
+        <main class="px-10">
+            <div class="mb-5 flex justify-start">
+                <button class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors cursor-pointer group">
+                    <span class="material-symbols-outlined text-primary text-[16px] group-hover:-rotate-180 transition-transform duration-500">sync</span>
+                    <span class="text-[12px] font-medium text-gray-700">처음으로 돌아가기</span>
+                </button>
+            </div>
+            
+            <section class="mb-6">
+                <div class="flex items-center gap-2 mb-2.5">
+                    <span class="material-symbols-outlined text-primary text-xl">timer</span>
+                    <h2 class="text-[17px] font-bold text-gray-900 tracking-tight">프로그램 실행 정보</h2>
+                </div>
+                <div class="card-bg rounded-xl overflow-hidden border border-gray-200 mb-3">
+                    <details class="group" open="">
+                        <summary class="px-5 py-2.5 bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700 hover:text-primary transition-colors border-b border-gray-200">
+                            <span class="material-symbols-outlined text-[18px] transition-transform group-open:rotate-180">expand_more</span>
+                            <span class="text-[11px] font-bold uppercase tracking-wide">상세 실행 로그</span>
+                        </summary>
+                        <div class="overflow-x-auto bg-white">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="bg-gray-50/50 text-[9px] text-gray-500 font-bold uppercase tracking-wider border-b border-gray-200">
+                                        <th class="px-5 py-3">작업명</th>
+                                        <th class="px-5 py-3">시작 시간</th>
+                                        <th class="px-5 py-3">종료 시간</th>
+                                        <th class="px-5 py-3">경과 시간</th>
+                                        <th class="px-5 py-3 text-right">상태</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-[11px]">
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td class="px-5 py-3 text-gray-900 font-medium">Prodigal (DNA to Amino Acid)</td>
+                                        <td class="px-5 py-3 text-gray-500">2026-04-10 19:44:31</td>
+                                        <td class="px-5 py-3 text-gray-500">2026-04-10 19:44:37</td>
+                                        <td class="px-5 py-3 text-gray-500">0:00:05</td>
+                                        <td class="px-5 py-3 text-right font-bold"><span class="text-secondary">Success</span></td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td class="px-5 py-3 text-gray-900 font-medium">DIAMOND BlastP</td>
+                                        <td class="px-5 py-3 text-gray-500">2026-04-10 19:44:37</td>
+                                        <td class="px-5 py-3 text-gray-500">2026-04-10 19:44:37</td>
+                                        <td class="px-5 py-3 text-gray-500">0:00:00</td>
+                                        <td class="px-5 py-3 text-right font-bold"><span class="text-secondary">Success</span></td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-5 py-3 text-gray-900 font-medium">RADAR Engine</td>
+                                        <td class="px-5 py-3 text-gray-500">2026-04-10 19:44:31</td>
+                                        <td class="px-5 py-3 text-gray-500">2026-04-10 19:44:41</td>
+                                        <td class="px-5 py-3 text-gray-500">0:00:06</td>
+                                        <td class="px-5 py-3 text-right font-bold"><span class="text-secondary">Success</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                    <div class="px-5 py-2.5 flex items-center justify-between border-t border-gray-200 bg-gray-50">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[12px]">🏁</span>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">전체 경과 시간:</span>
+                            <span class="text-[11px] text-gray-900 font-mono font-semibold bg-white border border-gray-200 shadow-sm px-1.5 py-0.5 rounded">00:00:11</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2.5 flex items-center gap-3 text-emerald-700 text-[11px] font-bold shadow-sm">
+                    ✅ RADAR 분석 완료
+                </div>
+            </section>
+            
+            <section class="mb-8">
+                <div class="flex items-center gap-2 mb-2.5">
+                    <span class="material-symbols-outlined text-primary text-xl">satellite_alt</span>
+                    <h2 class="text-[17px] font-bold text-gray-900 tracking-tight">RADAR 검색 결과 요약</h2>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 flex divide-x divide-gray-200 shadow-md">
+                    <div class="flex-1 px-6 first:pl-0">
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mb-1.5">통계 기록</p>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-[40px] font-bold text-gray-900 leading-none">115</span>
+                            <span class="text-[14px] font-bold text-gray-600">건</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 px-6">
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mb-1.5">임상 기록</p>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-[40px] font-bold text-gray-900 leading-none">16</span>
+                            <span class="text-[14px] font-bold text-gray-600">건</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <div class="flex items-center gap-2 mb-5">
+                    <span class="material-symbols-outlined text-primary text-xl">construction</span>
+                    <h2 class="text-[17px] font-bold text-gray-900 tracking-tight">다음 단계 분석 경로 선택</h2>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                    
+                    <div class="lg:col-span-1 flex flex-col h-full group">
+                        <div class="bg-blue-100 rounded-t-xl px-5 py-3 border border-blue-200 border-b-0">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-blue-700">
+                                    <span class="material-symbols-outlined text-[18px] fill-current">database</span>
+                                    <h3 class="font-bold text-[12px] uppercase tracking-wide">BOARDS DB 사용</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg rounded-b-xl border border-gray-200 border-t-0 flex flex-col flex-1 px-5 py-6 shadow-md">
+                            <div class="flex-1">
+                                <p class="text-blue-700 text-[13px] leading-relaxed font-bold break-keep mb-5">
+                                    DB에 이미 저장된 예측 구조 데이터를 사용하여 빠르게 분석으로 넘어갑니다.
+                                </p>
+                                <div class="space-y-2">
+                                    <p class="text-gray-900 text-[11px] font-bold uppercase tracking-wide">구성 요소:</p>
+                                    <ul class="text-gray-600 text-[12px] space-y-2 leading-snug font-medium">
+                                        <li class="flex gap-2"><span>•</span> <span>[리포트 1] 통계 요약 (Statistical Report)</span></li>
+                                        <li class="flex gap-2"><span>•</span> <span>[리포트 2] 임상 정보 (Clinical Report)</span></li>
+                                        <li class="flex gap-2"><span>•</span> <span>PAE 플롯</span></li>
+                                        <li class="flex gap-2"><span>•</span> <span>pLDDT 점수 - 평균 pLDDT, per-residue 신뢰도 플롯</span></li>
+                                        <li class="flex gap-2"><span>•</span> <span>항생제 내성 유발 단백질의 3차원 구조 예측 모델 시각화 및 파일 다운로드</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mt-8 pt-6 border-t border-gray-100">
+                                <button class="w-full py-3 cta-gradient text-white font-bold text-[13px] rounded-lg shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">cloud_download</span> 
+                                    BOARDS 데이터 사용
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-2 flex flex-col h-full">
+                        <div class="bg-amber-100 rounded-t-xl px-5 py-3 border border-amber-200 border-b-0">
+                            <div class="flex items-center gap-2 text-amber-700">
+                                <span class="text-[16px]">🧬</span>
+                                <h3 class="font-bold text-[12px] uppercase tracking-wide">AlphaFold2 실행</h3>
+                            </div>
+                        </div>
+                        <div class="card-bg p-6 rounded-b-xl border border-gray-200 border-t-0 flex flex-col flex-1 shadow-md">
+                            <div class="flex flex-col mb-6">
+                                <p class="text-amber-600 text-[18px] font-bold tracking-tight mb-2">단백질의 3차원 구조를 생성합니다.</p>
+                                <p class="text-gray-600 text-[14px] leading-relaxed font-medium">
+                                    AlphaFold2에 문제가 있을 시 <a class="text-amber-600 font-bold underline decoration-2 underline-offset-4 hover:text-amber-500 transition-colors" href="#">이 링크</a>를 이용하세요.
+                                </p>
+                            </div>
+                            <div class="af-config-bg rounded-lg overflow-hidden flex flex-col flex-1">
+                                <div class="px-4 py-3 flex items-center justify-between text-gray-900 border-b border-gray-200 bg-gray-100">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-symbols-outlined text-[18px]">settings</span>
+                                        <span class="text-[12px] font-bold tracking-tight">AlphaFold2 설정</span>
+                                    </div>
+                                </div>
+                                <div class="px-6 py-5 space-y-6 flex-1 bg-white">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                        <div class="space-y-2">
+                                            <label class="text-[11px] text-gray-700 font-bold tracking-tight">Runtime Mode</label>
+                                            <div class="bg-gray-50 rounded-md px-3 py-2 flex items-center justify-between border border-gray-300 text-gray-900 text-[12px] font-medium hover:border-primary/50 transition-colors shadow-sm">
+                                                <span>Local (Conda: af_pipeline)</span>
+                                                <span class="material-symbols-outlined text-[16px] text-gray-400">expand_more</span>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between items-center">
+                                                <label class="text-[11px] text-gray-700 font-bold tracking-tight">단백질 구조 모델 수 (Number of Models)</label>
+                                                <span class="text-red-500 font-bold text-[13px]">5</span>
+                                            </div>
+                                            <div class="relative py-2">
+                                                <input class="scientific-slider" max="5" min="1" type="range" value="5"/>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="text-[11px] text-gray-700 font-bold tracking-tight">MSA Mode</label>
+                                            <div class="bg-gray-50 rounded-md px-3 py-2 flex items-center justify-between border border-gray-300 text-gray-900 text-[12px] font-medium hover:border-primary/50 transition-colors shadow-sm">
+                                                <span>mmseqs2_uniref_env</span>
+                                                <span class="material-symbols-outlined text-[16px] text-gray-400">expand_more</span>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between items-center">
+                                                <label class="text-[11px] text-gray-700 font-bold tracking-tight">재구축 횟수 (Number of Recycles)</label>
+                                                <span class="text-red-500 font-bold text-[13px]">3</span>
+                                            </div>
+                                            <div class="relative py-2">
+                                                <input class="scientific-slider" max="10" min="1" type="range" value="3"/>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between items-center">
+                                                <div class="flex items-center gap-1.5">
+                                                    <label class="text-[11px] text-gray-700 font-bold tracking-tight">GPU Memory Fraction</label>
+                                                    <span class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">help</span>
+                                                </div>
+                                                <span class="text-red-500 font-bold text-[13px]">0.90</span>
+                                            </div>
+                                            <div class="relative py-2">
+                                                <input class="scientific-slider" max="100" min="0" type="range" value="90"/>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between items-center">
+                                                <label class="text-[11px] text-gray-700 font-bold tracking-tight">결과 폴더 이름 (Output Directory Name)</label>
+                                            </div>
+                                            <div class="relative py-0.5">
+                                                <div class="bg-gray-50 rounded-md px-3 h-[30px] flex items-center border border-gray-300 text-gray-900 text-[12px] font-medium shadow-sm hover:border-primary/50 transition-colors mt-1">
+                                                    <span>af2_results</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 mt-6 bg-red-500 text-white font-bold text-[13px] rounded-lg shadow-md hover:shadow-lg hover:bg-red-600 transition-all flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[20px] fill-current">local_fire_department</span> 
+                                AlphaFold2 분석 과정 가동
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

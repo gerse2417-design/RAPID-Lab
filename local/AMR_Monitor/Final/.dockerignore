@@ -1,0 +1,49 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# Streamlit/UI specific
+.streamlit/
+app.py
+
+# Version control
+.git/
+.gitignore
+
+# Data/Log files
+results/
+tests/
+.jupyter/
+*.ipynb
+*.log

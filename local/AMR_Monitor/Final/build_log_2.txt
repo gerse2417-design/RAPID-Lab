@@ -1,0 +1,60 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  120.4MB
+Step 1/22 : FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+ ---> f4d8e1264366
+Step 2/22 : ENV DEBIAN_FRONTEND=noninteractive
+ ---> Using cache
+ ---> 32f6f1bc9dfd
+Step 3/22 : ENV PYTHONUNBUFFERED=1
+ ---> Using cache
+ ---> c02ce0ab32ec
+Step 4/22 : ENV NUMBA_CACHE_DIR=/tmp
+ ---> Using cache
+ ---> d6a832ea5428
+Step 5/22 : ENV RUN_MODE=ui
+ ---> Using cache
+ ---> c2b14a6ccd4f
+Step 6/22 : EXPOSE 8501
+ ---> Using cache
+ ---> bfe720288afb
+Step 7/22 : RUN apt-get update && apt-get install -y     python3     python3-pip     python3-venv     wget     git     build-essential     kalign     libgomp1     && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 6821f2043f9f
+Step 8/22 : RUN ln -s /usr/bin/python3 /usr/bin/python || true
+ ---> Using cache
+ ---> b1b8bef007f7
+Step 9/22 : WORKDIR /app
+ ---> Using cache
+ ---> d62459256803
+Step 10/22 : RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+ ---> Using cache
+ ---> 0e4d4fb56ab7
+Step 11/22 : COPY app/requirements.txt /app/requirements.txt
+ ---> Using cache
+ ---> 8d33e5931784
+Step 12/22 : RUN pip install --no-cache-dir -r /app/requirements.txt
+ ---> Using cache
+ ---> ef281dbc8a3c
+Step 13/22 : RUN pip install --no-cache-dir "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
+ ---> Using cache
+ ---> a3839604b77d
+Step 14/22 : RUN pip install --no-cache-dir "jax[cuda12]>=0.4.23" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html || true
+ ---> Using cache
+ ---> 1e09284fb332
+Step 15/22 : COPY app/ /app/app/
+ ---> Using cache
+ ---> 96b7ba68222f
+Step 16/22 : COPY config/ /app/config/
+ ---> Using cache
+ ---> a93dc12471f4
+Step 17/22 : COPY af2_module/ /app/af2_module/
+ ---> Using cache
+ ---> b954c949ffb8
+Step 18/22 : COPY database.py pipeline.py diamond prodigal /app/
+ ---> Using cache
+ ---> 0c4f50843601
+Step 19/22 : COPY radar/ /app/radar/
+COPY failed: file not found in build context or excluded by .dockerignore: stat radar/: file does not exist

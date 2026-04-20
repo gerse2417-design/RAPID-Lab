@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Molecular Precision - BOARDS 분석 리포트</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            surface: '#f3f4f6', 
+            'surface-container-low': '#ffffff', 
+            'surface-container-lowest': '#f9fafb', 
+            'surface-container-highest': '#e5e7eb', 
+            primary: '#2563eb', 
+            'primary-container': '#1d4ed8', 
+            on_surface: '#111827', 
+            on_surface_variant: '#4b5563', 
+            outline_variant: 'rgba(0, 0, 0, 0.1)', 
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#005AC2',
+              600: '#004da6',
+              700: '#00408a',
+            },
+            clinical: {
+              success: '#22c55e',
+              warning: '#f59e0b',
+              error: '#ef4444',
+              gray: '#64748b',
+              border: '#e2e8f0',
+              bg: '#f8fafc',
+            },
+            plddt: {
+              veryhigh: '#0053D6',
+              confident: '#65CBF3',
+              low: '#FFE915',
+              verylow: '#FF7D45'
+            }
+          },
+          borderRadius: {
+            'helix': '0.25rem',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    body { background-color: #f3f4f6; color: #111827; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 3px; }
+    
+    .nav-item-active { background-color: rgba(37, 99, 235, 0.08); border-left: 3px solid #2563eb; color: #2563eb !important; }
+    .history-item:hover .history-actions { opacity: 1; }
+    .sidebar-btn-gradient { background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); }
+
+    .st-expander {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.25rem;
+      background: white;
+      overflow: hidden;
+    }
+    .st-expander-header {
+      padding: 0.75rem 1rem;
+      background: #f8fafc;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .st-info-box {
+      background-color: #ebf5ff;
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      color: #1e40af;
+      font-size: 0.875rem;
+    }
+    .scientific-table th {
+      background-color: #f9fafb;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #6b7280;
+      padding: 0.625rem 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      border-right: 1px solid #f3f4f6;
+    }
+    .scientific-table td {
+      font-size: 0.8125rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      border-right: 1px solid #f3f4f6;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen">
+<!-- BEGIN: MainHeader -->
+<header class="flex justify-between items-center px-8 h-14 w-full fixed top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-600 text-2xl">hub</span>
+<h1 class="text-[15px] font-bold text-gray-900 tracking-tight whitespace-nowrap">항생제 내성 유전자 탐지 기반 내성 억제 단백질 후보 설계 서비스</h1>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: SideSidebar -->
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed left-0 top-0 h-screen z-40 pt-14">
+<!-- Analysis Pipeline Navigation -->
+<nav class="flex-none mt-8 px-0">
+<div class="px-6 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-xl">rebase_edit</span>
+<h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-widest">분석 파이프라인</h3>
+</div>
+<div class="px-6 mb-2">
+<p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">진행 상태</p>
+</div>
+<a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+<span class="material-symbols-outlined text-xl">login</span>
+<span class="text-sm font-medium">데이터 입력</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+<span class="material-symbols-outlined text-xl">account_tree</span>
+<span class="text-sm font-medium">경로 선택</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600" href="#">
+<span class="material-symbols-outlined text-xl">biotech</span>
+<span class="text-sm font-medium">BOARDS DB 탐색</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 transition-colors text-gray-600 hover:text-blue-600 nav-item-active" href="#">
+<span class="material-symbols-outlined text-xl">science</span>
+<span class="text-sm font-medium">AlphaFold2 결과</span>
+</a>
+</nav>
+<!-- File Storage History -->
+<div class="flex-1 px-4 overflow-y-auto scrollbar-thin mt-8">
+<div class="flex items-center gap-2 px-2 mb-4">
+<span class="material-symbols-outlined text-gray-500 text-xl">folder</span>
+<h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-widest">파일 보관함</h3>
+</div>
+<div class="space-y-1">
+<div class="history-item group flex items-center justify-between px-2 py-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+<span class="text-xs truncate text-gray-800">
+<span class="material-symbols-outlined text-xs mr-2 text-gray-500 align-middle">insert_drive_file</span>
+            E. coli V583
+          </span>
+<div class="history-actions opacity-0 flex items-center gap-1 transition-opacity">
+<button class="p-1 text-gray-500 hover:text-blue-600 transition-colors" title="Rename"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1 text-gray-500 hover:text-red-500 transition-colors" title="Delete"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Footer Action -->
+<div class="p-4 space-y-4 border-t border-gray-200">
+<button class="w-full py-3 rounded-lg sidebar-btn-gradient text-white text-sm font-bold shadow-md hover:brightness-110 transition-all active:scale-[0.98]">
+        새 프로젝트
+      </button>
+</div>
+</aside>
+<!-- END: SideSidebar -->
+<!-- BEGIN: MainContent -->
+<div class="ml-64 pt-14 min-h-screen flex flex-col">
+<main class="flex-1 max-w-7xl mx-auto w-full px-8 pt-8 pb-10 space-y-8">
+<!-- Back Button -->
+<div class="mb-6 flex justify-start">
+<button class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm hover:bg-slate-50 transition-colors group">
+<div class="bg-blue-500 rounded p-0.5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px] font-bold group-hover:-rotate-180 transition-transform duration-500">sync</span>
+</div>
+<span class="text-sm font-bold text-slate-700">처음으로 돌아가기</span>
+</button>
+</div>
+<!-- BEGIN: ExecutionSummary -->
+<section class="space-y-4" data-purpose="execution-summary">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[#3B82F6] text-[24px]">timer</span>
+<span class="text-[#1E293B] font-bold tracking-tight">프로그램 실행 정보</span>
+</h2>
+</div>
+<div class="st-expander">
+<div class="st-expander-header">
+<span>상세 실행 시간 보기</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+<div class="p-0">
+<div class="overflow-x-auto">
+<table class="w-full scientific-table text-left border-collapse">
+<thead>
+<tr>
+<th>작업명</th>
+<th>시작 시간</th>
+<th>종료 시간</th>
+<th>경과 시간</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody class="text-xs text-slate-500">
+<tr>
+<td class="font-medium text-slate-700">Prodigal (DNA to Amino Acid)</td>
+<td>2026-04-13 09:53:51</td>
+<td>2026-04-13 09:53:57</td>
+<td>0:00:05</td>
+<td><span class="text-slate-700">Success</span></td>
+</tr>
+<tr>
+<td class="font-medium text-slate-700">DIAMOND BlastP</td>
+<td>2026-04-13 09:53:57</td>
+<td>2026-04-13 09:53:57</td>
+<td>0:00:00</td>
+<td><span class="text-slate-700">Success</span></td>
+</tr>
+<tr>
+<td class="font-medium text-slate-700">RADAR Engine</td>
+<td>2026-04-13 09:53:51</td>
+<td>2026-04-13 09:53:58</td>
+<td>0:00:06</td>
+<td><span class="text-slate-700">Success</span></td>
+</tr>
+<tr>
+<td class="font-medium text-slate-700">AlphaFold2</td>
+<td>09:54:03</td>
+<td>09:58:42</td>
+<td>0:04:39</td>
+<td><span class="text-slate-700">Success</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="st-info-box flex items-center gap-2 mt-6">
+<span class="material-symbols-outlined text-[18px] text-blue-800">grid_view</span>
+<div class="font-bold">※ 전체 경과 시간: <span class="font-medium">00:04:50</span></div>
+</div>
+</section>
+<!-- END: ExecutionSummary -->
+<!-- BEGIN: StructuralAnalysis -->
+<section class="space-y-8" data-purpose="structural-analysis">
+<div class="space-y-2"><h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3"><span>📊</span> AlphaFold2의 단백질 3차원 구조 및 신뢰도 결과</h2></div>
+<!-- PAE Plots -->
+<div class="bg-white border border-clinical-border rounded-helix p-6 shadow-sm">
+<h3 class="text-sm font-bold mb-6 flex items-center gap-2 text-slate-700">
+<span class="text-lg">📈</span> Predicted Aligned Error(PAE) 플롯
+          </h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+<!-- Rank 0 to 4 Placeholders -->
+<div class="space-y-2" data-purpose="pae-plot-rank-0">
+<div class="aspect-square bg-black rounded border border-slate-800 flex items-center justify-center">
+<span class="text-white/10 text-[8px] font-mono uppercase tracking-widest text-center px-2">PAE Plot Area</span>
+</div>
+<p class="text-[10px] text-center font-bold text-slate-500 uppercase">Rank 0</p>
+</div>
+<div class="space-y-2">
+<div class="aspect-square bg-black rounded border border-slate-800 flex items-center justify-center"><span class="text-white/10 text-[8px] font-mono uppercase tracking-widest">PAE Plot Area</span></div>
+<p class="text-[10px] text-center font-bold text-slate-500 uppercase">Rank 1</p>
+</div>
+<div class="space-y-2">
+<div class="aspect-square bg-black rounded border border-slate-800 flex items-center justify-center"><span class="text-white/10 text-[8px] font-mono uppercase tracking-widest">PAE Plot Area</span></div>
+<p class="text-[10px] text-center font-bold text-slate-500 uppercase">Rank 2</p>
+</div>
+<div class="space-y-2">
+<div class="aspect-square bg-black rounded border border-slate-800 flex items-center justify-center"><span class="text-white/10 text-[8px] font-mono uppercase tracking-widest">PAE Plot Area</span></div>
+<p class="text-[10px] text-center font-bold text-slate-500 uppercase">Rank 3</p>
+</div>
+<div class="space-y-2">
+<div class="aspect-square bg-black rounded border border-slate-800 flex items-center justify-center"><span class="text-white/10 text-[8px] font-mono uppercase tracking-widest">PAE Plot Area</span></div>
+<p class="text-[10px] text-center font-bold text-slate-500 uppercase">Rank 4</p>
+</div>
+</div>
+</div>
+<!-- pLDDT Scores -->
+<h2 class="text-sm font-bold text-slate-700 flex items-center gap-2 mb-4">
+<span class="text-lg">🧪</span>
+          Predicted Local Distance Difference Test(pLDDT) 점수
+        </h2>
+<div class="grid md:grid-cols-5 gap-6">
+<div class="md:col-span-3 bg-white border border-clinical-border rounded-helix p-6 shadow-sm">
+<h3 class="text-sm font-bold mb-6 text-slate-700"><span class="text-lg">📈</span> 잔기별 신뢰도 도표 (Per-residue Confidence Plot)</h3>
+<div class="h-64 flex items-end justify-between border-b-2 border-l-2 border-slate-200 relative">
+<div class="w-full h-full bg-black rounded-helix flex items-center justify-center">
+<span class="text-white/20 text-xs font-mono uppercase tracking-widest">Residue-wise Confidence Plot Placeholder</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 bg-white border border-clinical-border rounded-helix p-6 shadow-sm">
+<h3 class="text-sm font-bold mb-6 text-slate-700"><span class="text-lg">📈</span> 모델별 평균 pLDDT 점수 (Average pLDDT Score per Model)</h3>
+<div class="h-64 flex items-end justify-around gap-2 pb-2 border-b-2 border-slate-200">
+<div class="w-full h-full bg-black rounded-helix flex items-center justify-center">
+<span class="text-white/20 text-xs font-mono uppercase tracking-widest text-center">Model Average pLDDT Placeholder</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: StructuralAnalysis -->
+<!-- BEGIN: PdbDownloadGrid -->
+<section class="space-y-4" data-purpose="pdb-download-grid">
+<h2 class="text-sm font-bold text-slate-700 flex items-center gap-2"><span class="text-lg">📂</span>
+          단백질의 3차원 구조 예측 모델 다운로드 (.pdb)</h2>
+<div class="grid grid-cols-5 gap-4">
+<!-- Rank 0 to 4 PDB Download Buttons -->
+<div class="space-y-2">
+<p class="text-[10px] font-bold text-slate-600 uppercase">Rank 0</p>
+<button class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 rounded px-3 py-1.5 hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-rose-500">description</span>
+<span class="text-[11px] font-bold text-slate-600">PDB</span>
+</button>
+</div>
+<div class="space-y-2">
+<p class="text-[10px] font-bold text-slate-600 uppercase">Rank 1</p>
+<button class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 rounded px-3 py-1.5 hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-rose-500">description</span>
+<span class="text-[11px] font-bold text-slate-600">PDB</span>
+</button>
+</div>
+<div class="space-y-2">
+<p class="text-[10px] font-bold text-slate-600 uppercase">Rank 2</p>
+<button class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 rounded px-3 py-1.5 hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-rose-500">description</span>
+<span class="text-[11px] font-bold text-slate-600">PDB</span>
+</button>
+</div>
+<div class="space-y-2">
+<p class="text-[10px] font-bold text-slate-600 uppercase">Rank 3</p>
+<button class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 rounded px-3 py-1.5 hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-rose-500">description</span>
+<span class="text-[11px] font-bold text-slate-600">PDB</span>
+</button>
+</div>
+<div class="space-y-2">
+<p class="text-[10px] font-bold text-slate-600 uppercase">Rank 4</p>
+<button class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 rounded px-3 py-1.5 hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-rose-500">description</span>
+<span class="text-[11px] font-bold text-slate-600">PDB</span>
+</button>
+</div>
+</div>
+</section>
+<!-- END: PdbDownloadGrid -->
+<!-- BEGIN: VisualizationSection -->
+<section class="bg-white border border-clinical-border rounded-helix p-6 space-y-6 shadow-sm" data-purpose="visualization">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<h2 class="text-lg font-bold flex items-center gap-2"><span class="material-symbols-outlined text-rose-500">visibility</span> 단백질의 3차원 구조 예측 모델 선택 및 시각화</h2>
+<div class="flex items-center gap-3">
+<label class="text-xs font-bold text-slate-500 uppercase">예측 모델 선택:</label>
+<select class="text-sm rounded-helix border-slate-200 focus:ring-brand-500 bg-slate-50 py-1.5 pl-3 pr-10">
+<option>Rank 0 (pLDDT: 93.2)</option>
+<option>Rank 1 (pLDDT: 92.3)</option>
+<option>Rank 2 (pLDDT: 92.2)</option>
+</select>
+</div>
+</div>
+<!-- 3D Viewer Placeholder -->
+<div class="aspect-video bg-black rounded-helix relative overflow-hidden flex flex-col items-center justify-center border border-slate-800 shadow-inner">
+<span class="text-white/20 text-xs font-mono uppercase tracking-widest">3D Model Visualization Placeholder</span>
+</div>
+<!-- Legend and Info -->
+<div class="grid md:grid-cols-2 gap-6 items-start">
+<div class="p-4 bg-slate-50 rounded-helix border border-slate-200">
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Model Confidence</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 rounded-sm" style="background-color: #0053D6;"></span>
+<span class="text-xs font-medium text-slate-700">Very high (pLDDT &gt; 90)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 rounded-sm" style="background-color: #65CBF3;"></span>
+<span class="text-xs font-medium text-slate-700">Confident (90 &gt; pLDDT &gt; 70)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 rounded-sm" style="background-color: #FFE915;"></span>
+<span class="text-xs font-medium text-slate-700">Low (70 &gt; pLDDT &gt; 50)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 rounded-sm" style="background-color: #FF7D45;"></span>
+<span class="text-xs font-medium text-slate-700">Very low (pLDDT &lt; 50)</span>
+</div>
+</div>
+</div>
+<div class="p-4 bg-blue-50 border border-blue-100 rounded-helix flex items-center min-h-[92px]">
+<p class="text-xs text-blue-800 leading-relaxed">AlphaFold2 produces a per-residue confidence score (pLDDT) between 0 and 100.</p>
+</div>
+</div>
+<!-- Selected Model Download Action -->
+<div class="st-expander mt-4 shadow-sm">
+<div class="st-expander-header">
+<span>선택된 모델 다운로드</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+<div class="p-6 bg-white flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-brand-50 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-brand-600">description</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">현재 선택된 모델: Rank 0</p>
+<p class="text-xs text-slate-500">pLDDT 점수: 93.2%</p>
+</div>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-initial bg-white border-2 border-brand-500 text-brand-500 font-bold py-2.5 px-6 rounded-helix hover:bg-brand-50 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                Download PDB
+              </button>
+<button class="flex-1 md:flex-initial bg-brand-500 text-white font-bold py-2.5 px-6 rounded-helix hover:bg-brand-600 transition-colors shadow-md flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">folder_zip</span>
+                전체 데이터 (.ZIP) 다운로드
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: VisualizationSection -->
+</main>
+</div>
+<!-- END: MainContent -->
+</body></html>
