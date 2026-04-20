@@ -1,0 +1,48 @@
+# RFdiffusion GPU Pipeline — pip 의존성
+# 대형 리포(RFdiffusion, ColabDesign, SE3Transformer)는 EBS 볼륨에서 마운트
+# AF2 파라미터(~5GB)도 EBS 마운트
+#
+# 설치: pip install --no-cache-dir -r requirements-gpu.txt
+
+python-dotenv==1.1.0
+
+# PyTorch (CUDA 12.1)
+# torch 설치 시 CUDA 12.1 인덱스 사용:
+# pip install torch==2.1.0 --index-url https://download.pytorch.org/whl/cu121
+
+# 과학 계산
+numpy==1.26.4
+scipy==1.15.3
+
+# RFdiffusion 설정 관리
+hydra-core==1.3.2
+omegaconf==2.3.0
+PyYAML==6.0.3
+pyrsistent==0.20.0
+
+# SE3 등변 신경망
+e3nn==0.5.5
+
+# JAX (AlphaFold / ColabDesign)
+jax[cuda12]==0.4.30
+jaxlib==0.4.30
+dm-haiku==0.0.16
+ml-collections==1.1.0
+
+# ColabDesign (ProteinMPNN + AF2) — setup.py install_requires
+absl-py
+biopython
+chex
+dm-tree
+immutabledict
+joblib
+matplotlib
+optax
+pandas
+
+# DGL (Deep Graph Library) — RFdiffusion 의존
+# pip install dgl==1.1.3+cu121 -f https://data.dgl.ai/wheels/cu121/repo.html
+
+# 기타
+opt-einsum==3.4.0
+opt-einsum-fx==0.1.4

@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# InhibiForge — Streamlit 네이티브 테마
+# HTML 디자인 토큰(theme.css)과 동일한 값을 사용하여
+# 버튼·슬라이더·탭·체크박스 등 기본 위젯 색상을 통일합니다.
+# ─────────────────────────────────────────────────────────────────────────────
+
+[theme]
+# --primary: #005ac1  →  버튼·슬라이더·포커스 링·링크 색상
+primaryColor        = "#005ac1"
+
+# --bg: #f8f9fa  →  메인 캔버스 배경
+backgroundColor     = "#f8f9fa"
+
+# --surface: #ffffff  →  사이드바·입력창·카드 배경
+secondaryBackgroundColor = "#ffffff"
+
+# 본문 텍스트 색상 (#1a1a2e 는 너무 진해 가독성 저하 — 표준 다크에 맞춤)
+textColor           = "#1a1a2e"
+
+# Inter / Space Grotesk 는 CSS @import 로 로드하므로 여기선 sans-serif 지정
+font                = "sans serif"

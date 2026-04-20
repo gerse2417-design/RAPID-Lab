@@ -1,0 +1,21 @@
+# LightDock CPU Pipeline — pip 의존성
+# DNAWorks 바이너리는 EBS 볼륨에서 마운트
+#
+# 설치: pip install --no-cache-dir -r requirements-cpu.txt
+
+python-dotenv==1.1.0
+
+# 도킹 엔진
+lightdock==0.9.4
+
+# 분자생물학
+biopython==1.87
+pdbfixer==1.12.0
+OpenMM==8.5.0
+ProDy==2.6.1
+freesasa==2.2.1
+
+# 데이터 처리
+pandas==2.0.3
+numpy==1.26.4
+scipy==1.15.3
