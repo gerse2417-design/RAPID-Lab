@@ -1,0 +1,31 @@
+# Python 관련
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# 대용량 바이너리 및 데이터 (10GB급 및 외부 도구 바이너리 제외)
+*.tar.gz
+*.dssp
+bin/apbs_bin/
+scripts/bin/p2rank/
+scripts/bin/fpocket/
+scripts/bin/jre/
+scripts/bin/vina/fpocket*
+
+# 로그 및 결과물
+*.log
+results/
+scratch/
+inputs/
+*.html
+*.txt
+!README*.md
+!requirements.txt
+
+# 테스트 및 백업 스크립트
+legacy_backup/
+temp_*/
+test_*/
+debug_*/

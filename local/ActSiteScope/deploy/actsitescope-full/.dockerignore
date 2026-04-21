@@ -1,0 +1,48 @@
+# ActSiteScope Docker Build Ignore List
+
+# Python artifacts
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git
+.git
+.gitignore
+
+# IDE configs
+.vscode/
+.idea/
+
+# Local data (Provided via volumes or S3)
+inputs/*
+results/*
+scratch/*
+
+# Analytical temporary data
+scripts/MPBind/tmp_in_*
+scripts/MPBind/results/
+
+# UI Files (Excluded for CLI container)
+app.py
+app copy*.py
+app_refactored.py
+.streamlit/
+
+# Logs & Error reports
+*.log
+vina_error.log
+mpbind_error.log
+
+# Temporary / Test files
+test_*.py
+test_out.txt
+*.dssp
+*.mc
+apbs.tar.gz
+*.tar.gz
+*.tar
+
+# Note: All files in scripts/ and app/ will be included
