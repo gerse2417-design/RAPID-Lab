@@ -29,3 +29,4 @@ legacy_backup/
 temp_*/
 test_*/
 debug_*/
+deploy/
