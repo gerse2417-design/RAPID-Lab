@@ -127,6 +127,8 @@ RAPID-Lab/
 ├── README.md                   # 본 문서
 ├── docker-compose.yml          # 4개 서비스 통합 오케스트레이션
 ├── docs/                       # 프로젝트 문서 및 다이어그램
+│   ├── ResistBreakers_RAPID-Lab_20260420_폰트수정.pdf
+│   ├── 프로젝트 기획서.pdf          
 │   ├── architecture.png
 │   ├── solution-background.png
 │   └── solution-concept.png
