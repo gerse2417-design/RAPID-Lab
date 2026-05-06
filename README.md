@@ -16,16 +16,12 @@
 **2026.02.24 ~ 2026.04.20** (종료)
 
 ### 솔루션 제안 배경
+<img width="1280" height="720" alt="solution-background" src="https://github.com/user-attachments/assets/339c2e7f-f478-452c-a6a7-c305f8f688bc" />
 
-<p align="center">
-  <img src="[RAPID-Lab/docs/solution-background.PNG](https://github.com/chlee19990109-cloud/RAPID-Lab/blob/main/docs/solution-background.PNG)" alt="RAPID-Lab 솔루션 제안 배경" width="900"/>
-</p>
 
 ### 솔루션 컨셉
+<img width="1280" height="720" alt="solution-concept" src="https://github.com/user-attachments/assets/79b0365c-8a24-4be2-b010-551708d13cfa" />
 
-<p align="center">
-  <img src="[RAPID-Lab/docs/solution-.png](https://github.com/chlee19990109-cloud/RAPID-Lab/blob/main/docs/solution-concept.PNG)" alt="RAPID-Lab 솔루션 컨셉" width="900"/>
-</p>
 
 ---
 
@@ -46,7 +42,7 @@
 ## 3. 시스템 아키텍처
 
 <p align="center">
-  <img src="docs/architecture.png" alt="RAPID-Lab 시스템 아키텍처" width="900"/>
+  <img src="docs/<img width="1280" height="720" alt="solution-total_workflow" src="https://github.com/user-attachments/assets/5fa56588-aaa4-4ac7-9dad-e9c49428f883" />" alt="RAPID-Lab 시스템 아키텍처" width="900"/>
 </p>
 <p align="center"><em>그림. RAPID-Lab 4-서비스 통합 아키텍처</em></p>
 
