@@ -1,5 +1,6 @@
 # RAPID-Lab
-**Resistance-Averting Protein Interface Design Lab**: 내성 억제 단백질 인터페이스 디자인
+**Resistance-Averting Protein Interface Design Lab**: AI 기반 β-lactam 계열 항생제 내성(AMR) 유전자 탐지 및 내성 억제 단백질 후보 설계 In-Silico 솔루션
+
 
 [![Docker Hub](https://img.shields.io/badge/Docker_Hub-syparkbioinfo%2Frapid--lab-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/syparkbioinfo/rapid-lab)
 
