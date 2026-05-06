@@ -40,11 +40,8 @@
 ---
 
 ## 3. 시스템 아키텍처
+<img width="1280" height="720" alt="solution-total_workflow" src="https://github.com/user-attachments/assets/f749deda-4555-4956-a595-04689b484198" />
 
-<p align="center">
-  <img src="docs/<img width="1280" height="720" alt="solution-total_workflow" src="https://github.com/user-attachments/assets/5fa56588-aaa4-4ac7-9dad-e9c49428f883" />" alt="RAPID-Lab 시스템 아키텍처" width="900"/>
-</p>
-<p align="center"><em>그림. RAPID-Lab 4-서비스 통합 아키텍처</em></p>
 
 ---
 
