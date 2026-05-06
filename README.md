@@ -18,7 +18,7 @@
 ### 솔루션 제안 배경
 
 <p align="center">
-  <img src="[RAPID-Lab/docs/solution-background.png](https://github.com/chlee19990109-cloud/RAPID-Lab/blob/main/docs/solution-background.PNG)" alt="RAPID-Lab 솔루션 제안 배경" width="900"/>
+  <img src="[RAPID-Lab/docs/solution-background.PNG](https://github.com/chlee19990109-cloud/RAPID-Lab/blob/main/docs/solution-background.PNG)" alt="RAPID-Lab 솔루션 제안 배경" width="900"/>
 </p>
 
 ### 솔루션 컨셉
